@@ -27,7 +27,6 @@ export const useProductsCart = create<ProductsCart>((set) => ({
 
   incrementProductCart: (productAtual: ProductType) => {
     set(({ productsCart }) => {
-      console.log("increment")
       const isProductInCart = productsCart.find(
         (product) => product.id === productAtual.id
       );
@@ -49,7 +48,7 @@ export const useProductsCart = create<ProductsCart>((set) => ({
   },
 
   decrementProductCart: (productAtual: ProductType) => {
-    set(({ productsCart}: any) => {
+    set(({ productsCart }: any) => {
       return productsCart.reduce(
         (acc: ProductType[], product: ProductType) => {
           if (product.id === productAtual.id) {
@@ -72,3 +71,6 @@ export const useProductsCart = create<ProductsCart>((set) => ({
     });
   },
 }));
+
+
+
