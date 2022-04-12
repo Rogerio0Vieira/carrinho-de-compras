@@ -7,10 +7,11 @@ type HeaderProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-const Header = ({ setIsOpen }: HeaderProps) => (
-  <Wrapper>
-    <ShoppingIcon onClick={() => setIsOpen(true)} aria-label="Shopping Icon" />
-  </Wrapper>
-);
-
+const Header = ({ setIsOpen }: HeaderProps) => {
+    return(
+    <Wrapper>
+      <ShoppingIcon onClick={() => setIsOpen(true)} aria-label="Shopping Icon" />
+    </Wrapper>
+  );
+}
 export default Header;

@@ -1,28 +1,55 @@
+import { useEffect } from "react";
+import { useProductsCart } from "../../context";
+import { ProductType } from "../../types/ProductType";
+import { priceFormat } from "../../utils/priceFormat";
 import Incrementor from "../Incrementor";
 import { Wrapper, Info, Column, Text, WrapperIncrementor } from "./styles";
 
 export type ProductProps = {
-  id: number;
-  name: string;
-  price: number;
-  picture: string;
-};
+  product: ProductType;
+}
 
-const Product = ({ id, name, price, picture }: ProductProps) => (
-  <Wrapper>
-    <img src={picture} alt={`Imagem de referência ${name}`} />
+const Product = ({product}:ProductProps) => {
+  const {productsCart, incrementProductCart, decrementProductCart} = useProductsCart();
 
-    <Info>
-      <Column>
-        <Text>{name}</Text>
-        <Text>{price}</Text>
-      </Column>
+  const productAmount = (productsCart: ProductType[]) =>{
+    let sum = 0;
+    productsCart.forEach((iten) => {
+      if(iten.id === product.id){
+        sum = iten.amount;
+      }
+    });
+    return sum;
+  }
 
-      <WrapperIncrementor>
-        <Incrementor id={id} quantity={1} />
-      </WrapperIncrementor>
-    </Info>
-  </Wrapper>
-);
+  const getProductAmount = productAmount(productsCart);
 
+  useEffect(() => {}, [productsCart])
+
+    return(
+      <Wrapper>
+        <img src={product.picture} alt={`Imagem de referência ${product.name}`} />
+
+        <Info>
+          <Column>
+            <Text>{product.name}</Text>
+            <Text>{priceFormat(product.price)}</Text>
+          </Column>
+
+          <WrapperIncrementor>
+            <Incrementor 
+            id={product.id} 
+            amount={getProductAmount}
+            sum={
+              getProductAmount <= product.quantity
+              ? () => incrementProductCart(product)
+              : () => alert("Esgotado!")
+            }
+            sub={() => decrementProductCart(product)}
+            />
+          </WrapperIncrementor>
+        </Info>
+      </Wrapper>
+   );
+}
 export default Product;
